@@ -1,0 +1,76 @@
+{% extends 'eventos/base.html' %}
+
+{% block title %}Detalle de Evento - Sistema de Eventos Deportivos{% endblock %}
+
+{% block content %}
+{% if evento %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>{{ evento.nombre }}</h1>
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Información del Evento</h5>
+                <p><strong>Deporte:</strong> {{ evento.deporte.nombre }}</p>
+                <p><strong>Fecha:</strong> {{ evento.fecha|date:"d/m/Y H:i" }}</p>
+                <p><strong>Lugar:</strong> {{ evento.lugar }}</p>
+                <p><strong>Descripción:</strong> {{ evento.descripcion|default:"Sin descripción" }}</p>
+                <p><strong>Fecha de Creación:</strong> {{ evento.fecha_creacion|date:"d/m/Y H:i" }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Acciones</h5>
+                <a href="{% url 'eventos:editar_evento' evento.pk %}" class="btn btn-warning w-100 mb-2">Editar</a>
+                <a href="{% url 'eventos:eliminar_evento' evento.pk %}" class="btn btn-danger w-100 mb-2">Eliminar</a>
+                <a href="{% url 'eventos:lista_eventos' %}" class="btn btn-secondary w-100">Volver a Lista</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h3>Participantes Inscritos ({{ participantes.count }})</h3>
+        {% if participantes %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for participante in participantes %}
+                    <tr>
+                        <td>{{ participante.nombre }}</td>
+                        <td>{{ participante.apellido }}</td>
+                        <td>{{ participante.email }}</td>
+                        <td>{{ participante.telefono|default:"-" }}</td>
+                        <td>
+                            <a href="{% url 'eventos:detalle_participante' participante.pk %}" class="btn btn-sm btn-info">Ver</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            No hay participantes inscritos en este evento.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% else %}
+<div class="alert alert-warning">
+    Evento no encontrado.
+</div>
+{% endif %}
+{% endblock %}
+

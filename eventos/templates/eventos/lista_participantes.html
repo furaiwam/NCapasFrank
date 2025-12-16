@@ -1,0 +1,50 @@
+{% extends 'eventos/base.html' %}
+
+{% block title %}Participantes - Sistema de Eventos Deportivos{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Lista de Participantes</h1>
+    <a href="{% url 'eventos:crear_participante' %}" class="btn btn-primary">Crear Participante</a>
+</div>
+
+{% if participantes %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Fecha de Creación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for participante in participantes %}
+            <tr>
+                <td>{{ participante.id }}</td>
+                <td>{{ participante.nombre }}</td>
+                <td>{{ participante.apellido }}</td>
+                <td>{{ participante.email }}</td>
+                <td>{{ participante.telefono|default:"-" }}</td>
+                <td>{{ participante.fecha_creacion|date:"d/m/Y" }}</td>
+                <td>
+                    <a href="{% url 'eventos:detalle_participante' participante.pk %}" class="btn btn-sm btn-info">Ver</a>
+                    <a href="{% url 'eventos:editar_participante' participante.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="{% url 'eventos:eliminar_participante' participante.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    No hay participantes registrados. <a href="{% url 'eventos:crear_participante' %}">Crear el primero</a>
+</div>
+{% endif %}
+{% endblock %}
+

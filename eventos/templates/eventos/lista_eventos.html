@@ -1,0 +1,50 @@
+{% extends 'eventos/base.html' %}
+
+{% block title %}Eventos - Sistema de Eventos Deportivos{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Lista de Eventos</h1>
+    <a href="{% url 'eventos:crear_evento' %}" class="btn btn-primary">Crear Evento</a>
+</div>
+
+{% if eventos %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Deporte</th>
+                <th>Fecha</th>
+                <th>Lugar</th>
+                <th>Participantes</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for evento in eventos %}
+            <tr>
+                <td>{{ evento.id }}</td>
+                <td><strong>{{ evento.nombre }}</strong></td>
+                <td>{{ evento.deporte.nombre }}</td>
+                <td>{{ evento.fecha|date:"d/m/Y H:i" }}</td>
+                <td>{{ evento.lugar }}</td>
+                <td>{{ evento.participantes.count }}</td>
+                <td>
+                    <a href="{% url 'eventos:detalle_evento' evento.pk %}" class="btn btn-sm btn-info">Ver</a>
+                    <a href="{% url 'eventos:editar_evento' evento.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="{% url 'eventos:eliminar_evento' evento.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    No hay eventos registrados. <a href="{% url 'eventos:crear_evento' %}">Crear el primero</a>
+</div>
+{% endif %}
+{% endblock %}
+

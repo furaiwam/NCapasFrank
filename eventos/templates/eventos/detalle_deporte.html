@@ -1,0 +1,67 @@
+{% extends 'eventos/base.html' %}
+
+{% block title %}Detalle de Deporte - Sistema de Eventos Deportivos{% endblock %}
+
+{% block content %}
+{% if deporte %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>{{ deporte.nombre }}</h1>
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Información del Deporte</h5>
+                <p><strong>Descripción:</strong> {{ deporte.descripcion|default:"Sin descripción" }}</p>
+                <p><strong>Fecha de Creación:</strong> {{ deporte.fecha_creacion|date:"d/m/Y H:i" }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Acciones</h5>
+                <a href="{% url 'eventos:editar_deporte' deporte.pk %}" class="btn btn-warning w-100 mb-2">Editar</a>
+                <a href="{% url 'eventos:eliminar_deporte' deporte.pk %}" class="btn btn-danger w-100 mb-2">Eliminar</a>
+                <a href="{% url 'eventos:lista_deportes' %}" class="btn btn-secondary w-100">Volver a Lista</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if eventos %}
+<div class="row mt-4">
+    <div class="col-12">
+        <h3>Eventos de este Deporte ({{ eventos.count }})</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Fecha</th>
+                        <th>Lugar</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for evento in eventos %}
+                    <tr>
+                        <td>{{ evento.nombre }}</td>
+                        <td>{{ evento.fecha|date:"d/m/Y H:i" }}</td>
+                        <td>{{ evento.lugar }}</td>
+                        <td>
+                            <a href="{% url 'eventos:detalle_evento' evento.pk %}" class="btn btn-sm btn-info">Ver</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% else %}
+<div class="alert alert-warning">
+    Deporte no encontrado.
+</div>
+{% endif %}
+{% endblock %}
+

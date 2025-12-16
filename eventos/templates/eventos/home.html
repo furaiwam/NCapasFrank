@@ -1,0 +1,77 @@
+{% extends 'eventos/base.html' %}
+
+{% block title %}Inicio - Sistema de Eventos Deportivos{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Bienvenido al Sistema de Eventos Deportivos</h1>
+        <p class="lead">Gestiona deportes, eventos y participantes de manera eficiente.</p>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Deportes</h5>
+                <h2 class="text-primary">{{ total_deportes }}</h2>
+                <a href="{% url 'eventos:lista_deportes' %}" class="btn btn-primary">Ver Deportes</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Eventos</h5>
+                <h2 class="text-success">{{ total_eventos }}</h2>
+                <a href="{% url 'eventos:lista_eventos' %}" class="btn btn-success">Ver Eventos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Participantes</h5>
+                <h2 class="text-info">{{ total_participantes }}</h2>
+                <a href="{% url 'eventos:lista_participantes' %}" class="btn btn-info">Ver Participantes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if eventos_futuros %}
+<div class="row mt-4">
+    <div class="col-12">
+        <h3>Próximos Eventos</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Deporte</th>
+                        <th>Fecha</th>
+                        <th>Lugar</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for evento in eventos_futuros %}
+                    <tr>
+                        <td>{{ evento.nombre }}</td>
+                        <td>{{ evento.deporte.nombre }}</td>
+                        <td>{{ evento.fecha|date:"d/m/Y H:i" }}</td>
+                        <td>{{ evento.lugar }}</td>
+                        <td>
+                            <a href="{% url 'eventos:detalle_evento' evento.pk %}" class="btn btn-sm btn-outline-primary">Ver</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
